@@ -12,6 +12,7 @@ const CLIP_SHAPES = [
   (w, h) => `polygon(0px ${h*0.1}px, ${w - h*0.4}px 0px, ${w}px ${h*0.45}px, ${w - h*0.25}px ${h}px, ${h*0.05}px ${h*0.9}px)`,
 ];
 
+
 export default function P3Menu() {
   const [active, setActive] = useState(0);
   const [mounted, setMounted] = useState(false);

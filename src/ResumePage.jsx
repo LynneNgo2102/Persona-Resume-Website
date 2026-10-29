@@ -3,18 +3,78 @@ import { useNavigate } from "react-router-dom";
 
 const ITEMS = [
   { id: "i", badge: "I", title: "EDUCATION", subtitle: "University / Coursework", rank: 3 },
-  { id: "ii", badge: "II", title: "SKILLS", subtitle: "Frontend / Design / UI", rank: 4 },
+  { id: "ii", badge: "II", title: "SKILLS", subtitle: "Java Full-Stack / Springboot / React", rank: 4 },
   { id: "iii", badge: "III", title: "PROJECTS", subtitle: "Featured Work", rank: 5 },
   { id: "iv", badge: "IV", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
 ];
 
+const DETAILS = {
+  i: {
+    heading: "EDUCATION LOG",
+    rows: [
+      {
+        title: "Computer Programming and Analysis at Seneca Polytechnic",
+        status: "ComPl"
+      }
+    ]
+  }
+}
+
 const EDUCATION_ROWS = [
-  { index: "01", title: "General Education", status: "Complete" },
-  { index: "02", title: "Computer Science Core", status: "In Progress" },
-  { index: "03", title: "Elective Track", status: "Queued" },
-  { index: "04", title: "Capstone Prep", status: "Pending" },
+  { index: "01", title: "Computer Programming and Analysis at Seneca Polytechnic", status: "Complete" },
+  // { index: "02", title: "Computer Science Core", status: "Complete" },
+  // { index: "03", title: "Elective Track", status: "Complete" },
+  // { index: "04", title: "Capstone Prep", status: "Complete" },
 ];
 
+const SKILLS_ROWS = [
+  { index: "01", title: "Java / Spring Boot", status: "Proficient" },
+  { index: "02", title: "React / JavaScript", status: "Proficient" },
+  { index: "03", title: "SQL / DB2", status: "Proficient" },
+  { index: "04", title: "Kotlin", status: "Intermediate" },
+  
+];
+
+const PROJECT_ROWS = [
+  { index: "01", title: "Wholesale Food Site", status: "In Progress" },
+  { index: "02", title: "MONEYSMART AI-DRIVEN BANK MANAGEMENT WEBSITE ", status: "Complete" },
+  { index: "03", title: "BOOK MANAGEMENT ", status: "Complete" },
+];
+
+const EXPERIENCE_ROWS = [
+  { index: "01", title: "Software Developer Intern at FPT Software", status: "Finished in 2024" },
+];
+
+function DetailPanel({ number, heading, progress, rows, bullets }) {
+  return (
+    <div className="resume-detail-panel">
+      <div className="resume-detail-top">
+        <div className="resume-detail-top-index">{number}</div>
+        <div className="resume-detail-top-title">{heading}</div>
+        <div className="resume-detail-top-progress">{progress}</div>
+      </div>
+
+      <div className="resume-detail-list">
+        {rows.map((row) => (
+          <div className="resume-detail-row" key={row.index}>
+            <div className="resume-detail-row-index">{row.index}</div>
+            <div className="resume-detail-row-title">{row.title}</div>
+            <div className="resume-detail-status">{row.status}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="resume-detail-bottom">
+        <div className="resume-detail-bottom-title">DETAILS</div>
+        <div className="resume-detail-bullets">
+          {bullets.map((b) => (
+            <div className="resume-detail-bullet" key={b}>{b}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 export default function ResumePage({ src }) {
   const navigate = useNavigate();
   const [active, setActive] = useState(1);
@@ -405,33 +465,58 @@ export default function ResumePage({ src }) {
         </div>
 
         {active === 0 && (
-          <div className="resume-detail-panel">
-            <div className="resume-detail-top">
-              <div className="resume-detail-top-index">01</div>
-              <div className="resume-detail-top-title">EDUCATION LOG</div>
-              <div className="resume-detail-top-progress">7/5</div>
-            </div>
+            <DetailPanel
+              number="01"
+              heading="EDUCATION LOG"
+              progress="1/1"
+              rows={EDUCATION_ROWS}
+              bullets={[
+                "- Graduated with Ontario Advanced Diploma",
+                "- Coursework: Data Structures and Algorithms; Android App Development; DB2; UNIX System Programming; Cloud Computing; Software Development; Advanced Networking; Project Management",
+              ]}
+            />
+          )}
 
-            <div className="resume-detail-list">
-              {EDUCATION_ROWS.map((row) => (
-                <div className="resume-detail-row" key={row.index}>
-                  <div className="resume-detail-row-index">{row.index}</div>
-                  <div className="resume-detail-row-title">{row.title}</div>
-                  <div className="resume-detail-status">{row.status}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="resume-detail-bottom">
-              <div className="resume-detail-bottom-title">DETAILS</div>
-              <div className="resume-detail-bullets">
-                <div className="resume-detail-bullet">- Maintain progress across required classes and supporting work.</div>
-                <div className="resume-detail-bullet">- Track portfolio-ready projects tied to coursework and labs.</div>
-                <div className="resume-detail-bullet">- Keep materials prepared for internships, research, and review.</div>
-              </div>
-            </div>
-          </div>
+        {active === 1 && (
+          <DetailPanel
+            number="02"
+            heading="SKILLS LOG"
+            progress="3/3"
+            rows={SKILLS_ROWS}
+            bullets={[
+              "- Built REST APIs with Spring Boot",
+              "- Tools: Git, Docker, Postman",
+            ]}
+          />
         )}
+
+        {active === 2 && (
+          <DetailPanel
+            number="03"
+            heading="PROJECT LOG"
+            progress="1/2"
+            rows={PROJECT_ROWS}
+            bullets={[
+              "- Full-stack features for a personal finance web application, including transaction management, budget tracking, expense categorization, and financial dashboard interfaces to help users monitor spending habits.",
+              "- Developed a full-stack web application using Vue 3, Java Spring Boot, Postgre, and RESTful APIs, providing a responsive user interface.",
+            ]}
+          />
+        )}
+
+        {active === 3 && (
+          <DetailPanel
+            number="04"
+            heading="EXPERIENCE LOG"
+            progress="1/1"
+            rows={EXPERIENCE_ROWS}
+            bullets={[
+              "- Built full-stack features with Vue 3, Spring Boot, JPA, and REST APIs",
+              "- Connected frontend to database through API endpoints using MVC architecture",
+              "- Worked in an Agile team: requirements, new features, and code reviews",
+              "- Debugged frontend and backend issues by tracing logs to root causes",
+            ]}
+  />
+)}
 
       </div>
     </div>

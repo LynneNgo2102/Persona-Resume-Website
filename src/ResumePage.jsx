@@ -8,23 +8,8 @@ const ITEMS = [
   { id: "iv", badge: "IV", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
 ];
 
-const DETAILS = {
-  i: {
-    heading: "EDUCATION LOG",
-    rows: [
-      {
-        title: "Computer Programming and Analysis at Seneca Polytechnic",
-        status: "ComPl"
-      }
-    ]
-  }
-}
-
 const EDUCATION_ROWS = [
   { index: "01", title: "Computer Programming and Analysis at Seneca Polytechnic", status: "Complete" },
-  // { index: "02", title: "Computer Science Core", status: "Complete" },
-  // { index: "03", title: "Elective Track", status: "Complete" },
-  // { index: "04", title: "Capstone Prep", status: "Complete" },
 ];
 
 const SKILLS_ROWS = [
@@ -32,13 +17,13 @@ const SKILLS_ROWS = [
   { index: "02", title: "React / JavaScript", status: "Proficient" },
   { index: "03", title: "SQL / DB2", status: "Proficient" },
   { index: "04", title: "Kotlin", status: "Intermediate" },
-  
 ];
 
 const PROJECT_ROWS = [
   { index: "01", title: "Wholesale Food Site", status: "In Progress" },
   { index: "02", title: "MONEYSMART AI-DRIVEN BANK MANAGEMENT WEBSITE ", status: "Complete" },
   { index: "03", title: "BOOK MANAGEMENT ", status: "Complete" },
+  { index: "04", title: "Asian Fridge", status: "In Progress" },
 ];
 
 const EXPERIENCE_ROWS = [
@@ -54,27 +39,30 @@ function DetailPanel({ number, heading, progress, rows, bullets }) {
         <div className="resume-detail-top-progress">{progress}</div>
       </div>
 
-      <div className="resume-detail-list">
-        {rows.map((row) => (
-          <div className="resume-detail-row" key={row.index}>
-            <div className="resume-detail-row-index">{row.index}</div>
-            <div className="resume-detail-row-title">{row.title}</div>
-            <div className="resume-detail-status">{row.status}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="resume-detail-bottom">
-        <div className="resume-detail-bottom-title">DETAILS</div>
-        <div className="resume-detail-bullets">
-          {bullets.map((b) => (
-            <div className="resume-detail-bullet" key={b}>{b}</div>
+      <div className="resume-detail-scroll">
+        <div className="resume-detail-list">
+          {rows.map((row) => (
+            <div className="resume-detail-row" key={row.index}>
+              <div className="resume-detail-row-index">{row.index}</div>
+              <div className="resume-detail-row-title">{row.title}</div>
+              <div className="resume-detail-status">{row.status}</div>
+            </div>
           ))}
+        </div>
+
+        <div className="resume-detail-bottom">
+          <div className="resume-detail-bottom-title">DETAILS</div>
+          <div className="resume-detail-bullets">
+            {bullets.map((b) => (
+              <div className="resume-detail-bullet" key={b}>{b}</div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 export default function ResumePage({ src }) {
   const navigate = useNavigate();
   const [active, setActive] = useState(1);
@@ -307,7 +295,11 @@ export default function ResumePage({ src }) {
           top: 9.5vh;
           right: 4.5vw;
           width: min(39vw, 620px);
-          min-height: 74vh;
+          height: 74vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          pointer-events: all;
           z-index: 12;
           padding: 22px 24px 24px 24px;
           background: linear-gradient(180deg, rgba(15, 28, 105, 0.96) 0%, rgba(8, 16, 68, 0.97) 100%);
@@ -327,6 +319,7 @@ export default function ResumePage({ src }) {
           pointer-events: none;
         }
         .resume-detail-top {
+          flex-shrink: 0;
           position: relative;
           display: grid;
           grid-template-columns: 70px 1fr auto;
@@ -339,6 +332,19 @@ export default function ResumePage({ src }) {
           color: #08153f;
           box-shadow: 10px 0 0 rgba(255, 94, 136, 0.88);
         }
+        .resume-detail-scroll {
+          position: relative;
+          flex: 1;
+          min-height: 0;
+          overflow-y: auto;
+          padding: 0 10px 14px 0;
+          scrollbar-width: thin;
+          scrollbar-color: #8df6ff rgba(8, 18, 72, 0.9);
+        }
+        .resume-detail-scroll::-webkit-scrollbar { width: 6px; }
+        .resume-detail-scroll::-webkit-scrollbar-track { background: rgba(8, 18, 72, 0.9); }
+        .resume-detail-scroll::-webkit-scrollbar-thumb { background: #8df6ff; }
+
         .resume-detail-top-index {
           font-family: 'Anton', sans-serif;
           font-size: 46px;
@@ -427,7 +433,6 @@ export default function ResumePage({ src }) {
           line-height: 1.15;
           color: #edfaff;
         }
-
       `}</style>
 
       <div className="resume-overlay">
@@ -438,12 +443,8 @@ export default function ResumePage({ src }) {
               key={item.id}
               className={`resume-card-wrap${active === index ? " active" : ""}${mounted ? " mounted" : ""}`}
               style={{ transitionDelay: `${index * 55}ms` }}
-              onMouseEnter={() => {
-                setActive(index);
-              }}
-              onClick={() => {
-                setActive(index);
-              }}
+              onMouseEnter={() => setActive(index)}
+              onClick={() => setActive(index)}
             >
               <div className="resume-card">
                 <div className="resume-badge">
@@ -465,17 +466,17 @@ export default function ResumePage({ src }) {
         </div>
 
         {active === 0 && (
-            <DetailPanel
-              number="01"
-              heading="EDUCATION LOG"
-              progress="1/1"
-              rows={EDUCATION_ROWS}
-              bullets={[
-                "- Graduated with Ontario Advanced Diploma",
-                "- Coursework: Data Structures and Algorithms; Android App Development; DB2; UNIX System Programming; Cloud Computing; Software Development; Advanced Networking; Project Management",
-              ]}
-            />
-          )}
+          <DetailPanel
+            number="01"
+            heading="EDUCATION LOG"
+            progress="1/1"
+            rows={EDUCATION_ROWS}
+            bullets={[
+              "- Graduated with Ontario Advanced Diploma",
+              "- Coursework: Data Structures and Algorithms; Android App Development; DB2; UNIX System Programming; Cloud Computing; Software Development; Advanced Networking; Project Management",
+            ]}
+          />
+        )}
 
         {active === 1 && (
           <DetailPanel
@@ -498,7 +499,7 @@ export default function ResumePage({ src }) {
             rows={PROJECT_ROWS}
             bullets={[
               "- Full-stack features for a personal finance web application, including transaction management, budget tracking, expense categorization, and financial dashboard interfaces to help users monitor spending habits.",
-              "- Developed a full-stack web application using Vue 3, Java Spring Boot, Postgre, and RESTful APIs, providing a responsive user interface.",
+              "- Developed a full-stack web application using Vue 3, Java Spring Boot, PostgreSQL, and RESTful APIs, providing a responsive user interface.",
             ]}
           />
         )}
@@ -515,9 +516,8 @@ export default function ResumePage({ src }) {
               "- Worked in an Agile team: requirements, new features, and code reviews",
               "- Debugged frontend and backend issues by tracing logs to root causes",
             ]}
-  />
-)}
-
+          />
+        )}
       </div>
     </div>
   );

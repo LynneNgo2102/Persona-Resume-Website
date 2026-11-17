@@ -283,7 +283,11 @@ export default function SideProjects({ src }) {
           top: 9.5vh;
           right: 4.5vw;
           width: min(39vw, 620px);
-          min-height: 74vh;
+          height: 74vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          pointer-events: all;
           z-index: 12;
           padding: 22px 24px 24px 24px;
           background: linear-gradient(180deg, rgba(15, 28, 105, 0.96) 0%, rgba(8, 16, 68, 0.97) 100%);
@@ -303,6 +307,7 @@ export default function SideProjects({ src }) {
           pointer-events: none;
         }
         .resume-detail-top {
+          flex-shrink: 0;
           position: relative;
           display: grid;
           grid-template-columns: 70px 1fr auto;
@@ -320,6 +325,20 @@ export default function SideProjects({ src }) {
           font-size: 46px;
           line-height: 1;
         }
+
+        .resume-detail-scroll {
+            position: relative;
+            flex: 1;
+            min-height: 0;                /* required, or flex won't let it shrink and scroll */
+            overflow-y: auto;
+            padding: 0 10px 14px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #8df6ff rgba(8, 18, 72, 0.9);
+          }
+          .resume-detail-scroll::-webkit-scrollbar { width: 6px; }
+          .resume-detail-scroll::-webkit-scrollbar-track { background: rgba(8, 18, 72, 0.9); }
+          .resume-detail-scroll::-webkit-scrollbar-thumb { background: #8df6ff; }
+
         .resume-detail-top-title {
           font-family: 'Anton', sans-serif;
           font-size: 42px;
@@ -443,22 +462,24 @@ export default function SideProjects({ src }) {
               <div className="resume-detail-top-progress">{done}/{detail.rows.length}</div>
             </div>
 
-            <div className="resume-detail-list">
-              {detail.rows.map((row, i) => (
-                <div className="resume-detail-row" key={row.title}>
-                  <div className="resume-detail-row-index">{String(i + 1).padStart(2, "0")}</div>
-                  <div className="resume-detail-row-title">{row.title}</div>
-                  <div className="resume-detail-status">{row.status}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="resume-detail-bottom">
-              <div className="resume-detail-bottom-title">DETAILS</div>
-              <div className="resume-detail-bullets">
-                {detail.bullets.map((b) => (
-                  <div className="resume-detail-bullet" key={b}>{b}</div>
+            <div className="resume-detail-scroll">
+              <div className="resume-detail-list">
+                {detail.rows.map((row, i) => (
+                  <div className="resume-detail-row" key={row.title}>
+                    <div className="resume-detail-row-index">{String(i + 1).padStart(2, "0")}</div>
+                    <div className="resume-detail-row-title">{row.title}</div>
+                    <div className="resume-detail-status">{row.status}</div>
+                  </div>
                 ))}
+              </div>
+
+              <div className="resume-detail-bottom">
+                <div className="resume-detail-bottom-title">DETAILS</div>
+                <div className="resume-detail-bullets">
+                  {detail.bullets.map((b) => (
+                    <div className="resume-detail-bullet" key={b}>{b}</div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
